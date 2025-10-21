@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Australia: Age Distribution of Listeners — Post Malone vs Others",
+  "width": 600,
+  "height": 380,
+  "data": { "url": "data/Global_Music_Streaming_Listener_Preferences.csv" },
+  "transform": [
+    { "filter": "datum.Country === 'Australia'" },
+    {
+      "calculate": "datum['Most Played Artist'] === 'Post Malone' ? 'Post Malone' : 'Others'",
+      "as": "ArtistGroup"
+    }
+  ],
+  "mark": { "type": "boxplot", "extent": "min-max" },
+  "encoding": {
+    "x": {
+      "field": "ArtistGroup",
+      "type": "nominal",
+      "title": null,
+      "sort": ["Post Malone", "Others"]
+    },
+    "y": {
+      "field": "Age",
+      "type": "quantitative",
+      "title": "Listener Age"
+    },
+    "color": {
+      "field": "ArtistGroup",
+      "type": "nominal",
+      "title": null,
+      "legend": null
+    },
+    "tooltip": [
+      {"field": "ArtistGroup", "type": "nominal", "title": "Group"},
+      {"field": "Age", "type": "quantitative"}
+    ]
+  }
+}

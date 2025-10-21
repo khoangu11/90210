@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Relationship Between Favourite Genre and Most Played Artist (Sample of 5,000 Listeners)",
+  "width": 500,
+  "height": 450,
+  "data": { "url": "data/Global_Music_Streaming_Listener_Preferences.csv" },
+  "transform": [
+    {
+      "aggregate": [{"op": "count", "as": "Listeners"}],
+      "groupby": ["Top Genre", "Most Played Artist"]
+    },
+    {
+      "filter": "indexof(['Adele','BTS','Bad Bunny','Billie Eilish','Drake','Dua Lipa','Post Malone'], datum['Most Played Artist']) >= 0"
+    }
+  ],
+  "mark": {"type": "bar"},
+  "encoding": {
+    "x": {
+      "field": "Top Genre",
+      "type": "nominal",
+      "title": "Favourite Genre",
+      "axis": {"labelAngle": -40}
+    },
+    "y": {
+      "field": "Listeners",
+      "type": "quantitative",
+      "title": "Number of Listeners"
+    },
+    "color": {
+      "field": "Most Played Artist",
+      "type": "nominal",
+      "title": "Most Played Artist"
+    },
+    "tooltip": [
+      {"field": "Top Genre", "type": "nominal"},
+      {"field": "Most Played Artist", "type": "nominal"},
+      {"field": "Listeners", "type": "quantitative", "title": "Listeners (sample)"}
+    ]
+  }
+}

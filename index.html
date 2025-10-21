@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Listening Patterns and Music Diversity</title>
+
+  <!-- Vega & Vega-Lite -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <style>
+    :root {
+      --gap: 18px;
+      --card-bg: #ffffff;
+      --card-radius: 14px;
+      --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background-color: #f9fafb;
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    p {
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto 20px auto;
+      line-height: 1.5;
+      color: #444;
+    }
+
+    /* Large map chart */
+    #listener_map {
+      width: 100%;
+      height: 520px;
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      padding: 12px;
+    }
+
+    /* Two small charts under map */
+    .two-charts-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap);
+      margin-top: 20px;
+    }
+
+    .chart-card {
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      flex: 1 1 520px;
+      min-width: 360px;
+      padding: 14px;
+    }
+
+    /* Paragraph block below small charts */
+    .text-block {
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      padding: 18px;
+      margin-top: 20px;
+      min-height: 120px;
+    }
+
+    /* Final split section */
+    .final-split {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: var(--gap);
+      margin-top: 24px;
+    }
+
+    .final-split .left,
+    .final-split .right {
+      background: var(--card-bg);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shadow);
+      padding: 14px;
+    }
+
+    .final-split .left .chart {
+      width: 100%;
+      height: 420px;
+    }
+
+    .final-split .right {
+      min-height: 420px;
+    }
+
+    @media (max-width: 700px) {
+      .final-split {
+        grid-template-columns: 1fr;
+      }
+      .final-split .right {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Global Listening Patterns and Music Diversity</h1>
+  <p>
+    What do global listening patterns and popularity reveal about music diversity across different regions? 
+    <br>This dashboard uses a sample of 5000 music listeners across all platforms and a variety of ages, worldwide.
+  </p>
+
+  <!-- Map -->
+  <section>
+    <div id="listener_map"></div>
+  </section>
+
+  <!-- Two small charts -->
+  <section class="two-charts-row">
+    <article class="chart-card">
+      <h3>Genre–Artist Relationship</h3>
+      <div id="genre_artist_correlation" class="chart"></div>
+    </article>
+
+    <article class="chart-card">
+      <h3>Australia — Post Malone Listener Ages</h3>
+      <div id="au_postmalone_age_boxplot" class="chart"></div>
+    </article>
+  </section>
+
+  <!-- Paragraph under small charts -->
+  <section class="text-block">
+    <h3>Variety in genre and ages</h3>
+    <p>The genre-artist relationship chart indicates that there is no strong correlation between a listener's favourite genre and their most-played artist. Each genre contains a diverse mix of artists, suggesting that popular musicians appeal across stylistic boundaries.
+        <br><br>In Australia, the age distribution analysis shows that around half of Post Malone’s listeners are aged between 27 and 44, whereas audiences for other artists display a broader range from approximately 26 to 50 years old. This suggests that Post Malone’s appeal is concentrated among younger working-age adults, while other artists maintain a more age-diverse fan base.
+    </p>
+  </section>
+
+  <!-- Final layout: chart left, paragraph right -->
+  <section class="final-split">
+    <div class="left">
+      <h3>Most-Streamed Artists — Diversity View</h3>
+      <div id="most_streamed_artists_scatter" class="chart"></div>
+    </div>
+    <div class="right">
+      <h3>Discussion</h3>
+      <p>It is interesting that Drake, the highest-streamed artist globally, appears as the most popular only in India, while Bad Bunny, with fewer overall streams, is the favourite in three countries. This may reflect sampling limitations or regional biases in the dataset, where certain listener groups are over- or under-represented.
+        <br><br> Similarly, Adele, despite having comparatively lower Spotify streams than many other major artists, emerges as the most popular in Germany. This contrast suggests that Spotify streams alone may not fully capture an artist’s global popularity, as artists like Adele and Bad Bunny may gain significant traction through other platforms such as YouTube or SoundCloud, or through offline listening habits in certain regions.
+        <br><br> In Australia, Post Malone stands out as the most listened-to artist, with a strong concentration of listeners aged 27–44. This indicates a consistent and loyal mid-aged audience base, contrasting with the broader age spread observed for other artists. Collectively, these findings highlight how regional preferences, platform availability, and demographic factors shape global listening diversity beyond mere streaming numbers.
+    </div>
+  </section>
+
+  <!-- Vega Embeds -->
+  <script>
+    vegaEmbed('#listener_map', 'js/listener_map.json', { actions: false });
+    vegaEmbed('#genre_artist_correlation', 'js/genre_artist_correlation.json', { actions: false });
+    vegaEmbed('#au_postmalone_age_boxplot', 'js/au_postmalone_age_boxplot.json', { actions: false });
+    vegaEmbed('#most_streamed_artists_scatter', 'js/most_streamed_artists_scatter.json', { actions: false });
+  </script>
+</body>
+</html>

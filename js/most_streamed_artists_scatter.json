@@ -1,0 +1,55 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Spotify’s Most-Streamed Artists — Popularity vs Daily Streams (≥10 M total)",
+  "width": 700,
+  "height": 500,
+  "data": { "url": "data/most_streamed_artists.csv" },
+  "transform": [
+    { "calculate": "toNumber(replace(datum.Streams, ',', ''))", "as": "TotalStreams" },
+    { "calculate": "toNumber(replace(datum.Daily, ',', ''))", "as": "DailyStreams" },
+    { "calculate": "toNumber(replace(datum['As feature'], ',', ''))", "as": "FeatureStreams" },
+    { "filter": "datum.TotalStreams >= 10000" },
+    {
+      "calculate": "indexof(['Adele','BTS','Bad Bunny','Billie Eilish','Drake','Dua Lipa','Post Malone'], datum.Artist) >= 0 ? 'selected' : 'other'",
+      "as": "Group"
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "circle", "opacity": 0.35, "color": "#D3D3D3", "stroke": "white", "strokeWidth": 0.5 },
+      "transform": [{ "filter": "datum.Group === 'other'" }],
+      "encoding": {
+        "x": { "field": "TotalStreams", "type": "quantitative", "title": "Total Streams (Thousands)" },
+        "y": { "field": "DailyStreams", "type": "quantitative", "title": "Average Daily Streams (Thousands)" },
+        "size": {
+          "field": "FeatureStreams",
+          "type": "quantitative",
+          "title": "Streams as Featured Artist (Thousands)",
+          "scale": { "range": [50, 800] }
+        },
+        "tooltip": [{ "field": "Artist", "type": "nominal" }]
+      }
+    },
+    {
+      "mark": { "type": "circle", "stroke": "white", "strokeWidth": 1 },
+      "transform": [{ "filter": "datum.Group === 'selected'" }],
+      "encoding": {
+        "x": { "field": "TotalStreams", "type": "quantitative" },
+        "y": { "field": "DailyStreams", "type": "quantitative" },
+        "size": {
+          "field": "FeatureStreams",
+          "type": "quantitative",
+          "scale": { "range": [100, 1400] }
+        },
+        "color": { "field": "Artist", "type": "nominal", "title": "Selected Artists" },
+        "tooltip": [
+          { "field": "Artist", "type": "nominal" },
+          { "field": "Streams", "title": "Total Streams (K)" },
+          { "field": "Daily", "title": "Daily Streams (K)" },
+          { "field": "As lead", "title": "As Lead (K)" },
+          { "field": "As feature", "title": "As Feature (K)" }
+        ]
+      }
+    }
+  ]
+}
