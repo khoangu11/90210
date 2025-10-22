@@ -87,13 +87,3 @@ p {
 .final-split .right {
   min-height: 420px;
 }
-
-
-@media (max-width: 700px) {
-  .final-split {
-    grid-template-columns: 1fr;
-  }
-  .final-split .right {
-    min-height: auto;
-  }
-}
